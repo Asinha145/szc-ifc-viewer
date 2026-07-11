@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SZC IFC Viewer</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+  { "imports": { "three": "./lib/three.module.js" } }
+</script>
+</head>
+<body>
+  <header id="toolbar">
+    <div class="tb-group" id="tb-file">
+      <label id="open-label" class="btn" for="file-input" title="Open an IFC file">Open IFC…</label>
+      <input type="file" id="file-input" accept=".ifc" hidden>
+    </div>
+    <div class="tb-group" id="tb-visibility" title="Visibility (operates on current selection)">
+      <button class="btn" id="btn-hide" disabled>Hide</button>
+      <button class="btn" id="btn-hide-unselected" disabled>Hide Unselected</button>
+      <button class="btn" id="btn-unhide-selected" disabled>Unhide Selected</button>
+      <button class="btn" id="btn-unhide-all" disabled>Unhide All</button>
+    </div>
+    <div class="tb-group" id="tb-views">
+      <button class="btn" id="btn-view-top" disabled>Top</button>
+      <button class="btn" id="btn-view-bottom" disabled>Bottom</button>
+      <button class="btn" id="btn-view-left" disabled>Left</button>
+      <button class="btn" id="btn-view-right" disabled>Right</button>
+      <button class="btn" id="btn-view-front" disabled>Front</button>
+      <button class="btn" id="btn-view-back" disabled>Back</button>
+      <button class="btn" id="btn-view-iso" disabled>Isometric</button>
+      <button class="btn" id="btn-projection" disabled title="Toggle perspective / orthographic">Perspective</button>
+    </div>
+    <div class="tb-group tb-right">
+      <button class="btn btn-primary" id="btn-export" disabled title="Export IFC with SZC-ARMF property sets">Export</button>
+    </div>
+  </header>
+
+  <main id="layout">
+    <aside id="left-panel">
+      <h2>Selection Tree</h2>
+      <label class="field-label" for="pset-select">Property set</label>
+      <select id="pset-select" disabled><option value="">— load a model —</option></select>
+      <label class="field-label" for="prop-select">Property</label>
+      <select id="prop-select" disabled><option value="">—</option></select>
+      <label class="field-label">Values</label>
+      <ul id="value-list"></ul>
+      <div id="filter-footer">
+        <span id="filter-status"></span>
+        <button class="btn" id="btn-clear-filter">Clear</button>
+      </div>
+    </aside>
+
+    <section id="viewport-wrap">
+      <div id="viewport"></div>
+      <div id="dropzone">
+        <div id="dropzone-inner">
+          <p><strong>Drop an .ifc file here</strong></p>
+          <p>or use “Open IFC…” in the toolbar</p>
+        </div>
+      </div>
+      <div id="marquee" hidden></div>
+      <div id="loading" hidden><div class="spinner"></div><span id="loading-text">Loading…</span></div>
+    </section>
+
+    <aside id="right-panel">
+      <h2 id="props-title">Properties</h2>
+      <nav id="tabs"></nav>
+      <div id="tab-content"><p class="hint">Click an element in the 3D view, or filter from the selection tree.</p></div>
+    </aside>
+  </main>
+
+  <footer id="statusbar">
+    <span id="status-file">No model loaded</span>
+    <span id="status-elements"></span>
+    <span id="status-selected"></span>
+    <span id="status-hidden"></span>
+    <span class="tb-right hint">Click: select · Ctrl+click: multi-select · Shift+drag: box select</span>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

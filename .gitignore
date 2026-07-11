@@ -1,0 +1,4 @@
+test/node_modules/
+test/test-results/
+test/playwright-report/
+fable_prompt.txt
