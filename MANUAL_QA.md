@@ -22,6 +22,8 @@ Screenshots of the checked states are in `test/qa-screenshots/`
 - ✅ Ctrl+click adds/removes elements from the selection
 - ✅ Shift+drag draws a marquee and selects the elements inside it
 - ✅ Selection tree: pset dropdown → property dropdown → value click selects all matching elements (count shown)
+- ✅ Selection tree: Ctrl+click toggles multiple distinct values; Shift+click picks a range; 3D selection = union
+
 - ✅ Status bar tracks `N selected`
 
 ## Visibility
@@ -33,7 +35,7 @@ Screenshots of the checked states are in `test/qa-screenshots/`
 ## Properties
 - ✅ Right panel shows one tab per source pset (read-only) + Element tab
 - ✅ SZC-ARMF tab present on every element; row 1 Module fixed to "Part Type 2"
-- ✅ "+" adds a free-text Module/Value row
+- ✅ "+" adds a free-text Module/Value row; "−" removes an added row (row 1 has no remove button)
 - ✅ Edits autosave on keystroke; reload restores them (same file + element)
 
 ## Export

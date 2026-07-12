@@ -1,4 +1,4 @@
-# SZC IFC Viewer — Navisworks-style web viewer
+# SZC Forge Vault — Navisworks-style web IFC viewer
 
 A fully client-side IFC viewer: load an IFC, inspect every property set,
 filter/select elements, control visibility, attach **SZC-ARMF** custom
@@ -40,13 +40,17 @@ Load a model with **Open IFC…** or by dragging an `.ifc` file onto the page.
 | Hide / Hide Unselected / Unhide Selected / Unhide All | Visibility, driven by the current selection |
 
 **Selection tree (left panel):** choose a property set → property → click a
-value to select and highlight every matching element.
+value to select and highlight every matching element. The value list is a
+multi-select listbox: **Ctrl+click** toggles individual values in and out of
+the pick, **Shift+click** picks the whole range from the last clicked value —
+the 3D selection is the union of all picked values' elements.
 
 **Properties (right panel):** one read-only tab per property set found in
 the source IFC (source metadata is *never* modified), plus:
 
 **SZC-ARMF tab** — present for every element. A Module | Value table whose
-first row's Module is fixed to `Part Type 2`; **+** adds free-text rows.
+first row's Module is fixed to `Part Type 2`; **+** adds free-text rows and
+**−** removes an added row (the Part Type 2 row cannot be removed).
 Every keystroke autosaves to `localStorage`, keyed by the loaded filename +
 the element's IFC GlobalId, so edits survive page reloads. Rows with both
 cells filled are the ones exported.

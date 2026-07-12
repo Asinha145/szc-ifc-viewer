@@ -82,6 +82,38 @@ test("end-to-end smoke", async ({ page }) => {
     expect(pickedGid).toBeTruthy();
   });
 
+  await test.step("value list multi-select: ctrl toggles, shift picks a range", async () => {
+    const items = page.locator("#value-list li");
+    const total = await items.count();
+    expect(total).toBeGreaterThanOrEqual(3);
+    // values partition elements for a (pset, property), so unions = sum of counts
+    const counts = [];
+    for (let i = 0; i < 3; i++) {
+      counts.push(Number(await items.nth(i).locator(".count").textContent()));
+    }
+    const selCount = () => page.evaluate(() => window.ifcModel.selection().length);
+
+    // value 0 is already picked from the previous step; ctrl+click adds value 1
+    await items.nth(1).click({ modifiers: ["Control"] });
+    expect(await selCount()).toBe(counts[0] + counts[1]);
+    expect(await items.nth(0).getAttribute("class")).toContain("active");
+    expect(await items.nth(1).getAttribute("class")).toContain("active");
+
+    // ctrl+click value 1 again removes it
+    await items.nth(1).click({ modifiers: ["Control"] });
+    expect(await selCount()).toBe(counts[0]);
+
+    // shift+click value 2 picks the range from the anchor (last ctrl+click
+    // moved it to value 1), replacing the picked set with values 1..2
+    await items.nth(2).click({ modifiers: ["Shift"] });
+    expect(await selCount()).toBe(counts[1] + counts[2]);
+    await expect(page.locator("#filter-status")).toContainText("2 values");
+
+    // plain click restores a single-value pick for the following steps
+    await items.nth(0).click();
+    expect(await selCount()).toBe(filterSelectedCount);
+  });
+
   await test.step("visibility toolbar", async () => {
     await page.click("#btn-hide");
     expect(await page.evaluate(() => window.ifcModel.hidden().length)).toBe(filterSelectedCount);
@@ -259,6 +291,28 @@ test("end-to-end smoke", async ({ page }) => {
     const bars = api.GetLineIDsWithType(modelID, WebIFC.IFCREINFORCINGBAR).size();
     expect(beams + bars).toBe(elementCount);
     api.CloseModel(modelID);
+  });
+
+  await test.step("SZC-ARMF '−' removes an added row and persists", async () => {
+    // the SZC-ARMF tab is still open on the picked element from the earlier step
+    const rows = page.locator("#armf-table tbody tr");
+    expect(await rows.count()).toBe(2);
+    await expect(rows.nth(0).locator(".armf-remove-row")).toHaveCount(0); // row 1 not removable
+
+    await page.click("#armf-add-row");
+    await page.fill("#armf-table tbody tr:nth-child(3) .armf-module-input", "Temp");
+    await page.fill("#armf-table tbody tr:nth-child(3) .armf-value-input", "X");
+    expect(await rows.count()).toBe(3);
+
+    await rows.nth(2).locator(".armf-remove-row").click();
+    expect(await rows.count()).toBe(2);
+
+    const saved = await page.evaluate(
+      ([file, gid]) => JSON.parse(localStorage.getItem(`SZC-ARMF::${file}`))[gid],
+      [path.basename(FIXTURE), pickedGid],
+    );
+    expect(saved).toHaveLength(2);
+    expect(saved.some((r) => r.module === "Temp")).toBe(false);
   });
 
   await test.step("no console errors", async () => {

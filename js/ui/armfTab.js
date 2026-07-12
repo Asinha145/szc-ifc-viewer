@@ -1,7 +1,8 @@
 /**
  * The editable "SZC-ARMF" tab: a Module | Value table where row 1's Module is
  * the fixed label "Part Type 2" and every other cell is free text. "+" adds a
- * row. Every keystroke autosaves to localStorage keyed by filename+GlobalId
+ * row; "−" on an added row deletes it (row 1 cannot be deleted). Every
+ * keystroke autosaves to localStorage keyed by filename+GlobalId
  * (storage.js) — no save button, and a page reload restores the data.
  * Purely additive: source IFC metadata is never touched.
  */
@@ -14,7 +15,7 @@ export function renderArmfTab(state, el) {
   const table = document.createElement("table");
   table.className = "props";
   table.id = "armf-table";
-  table.innerHTML = `<thead><tr><th>Module</th><th>Value</th></tr></thead>`;
+  table.innerHTML = `<thead><tr><th>Module</th><th>Value</th><th class="armf-action"></th></tr></thead>`;
   const tbody = document.createElement("tbody");
   table.appendChild(tbody);
 
@@ -50,7 +51,21 @@ export function renderArmfTab(state, el) {
     valueInput.addEventListener("input", save);
     tdValue.appendChild(valueInput);
 
-    tr.append(tdModule, tdValue);
+    const tdAction = document.createElement("td");
+    tdAction.className = "armf-action";
+    if (!isFirst) {
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "armf-remove-row";
+      removeBtn.textContent = "−";
+      removeBtn.title = "Remove this row";
+      removeBtn.addEventListener("click", () => {
+        tr.remove();
+        save();
+      });
+      tdAction.appendChild(removeBtn);
+    }
+
+    tr.append(tdModule, tdValue, tdAction);
     tbody.appendChild(tr);
   };
 

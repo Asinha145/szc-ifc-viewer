@@ -2,7 +2,7 @@
 import { chromium } from "@playwright/test";
 
 const FIXTURE = "C:\\Users\\ASinha\\OneDrive - Laing ORourke\\Documents\\SWC\\Job\\Solving Dataset\\2hwx0208ac1_run\\input\\2HWX0208AC1.ifc";
-const URL = process.argv[2] ?? "https://asinha145.github.io/szc-ifc-viewer/";
+const URL = process.argv[2] ?? "https://asinha145.github.io/SZC-forge-vault/";
 
 const browser = await chromium.launch({ channel: "msedge", headless: true, args: ["--enable-unsafe-swiftshader"] });
 const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });

@@ -34,6 +34,7 @@ body { display: flex; flex-direction: column; }
   flex-wrap: wrap;
 }
 .tb-group { display: flex; gap: 4px; align-items: center; }
+#brand { font-weight: 700; letter-spacing: 0.04em; margin-right: 8px; color: var(--accent); white-space: nowrap; }
 .tb-group + .tb-group { padding-left: 14px; border-left: 1px solid var(--border); }
 .tb-right { margin-left: auto; }
 
@@ -101,6 +102,7 @@ select {
   background: var(--bg-panel-2);
   min-height: 80px;
 }
+#value-list { user-select: none; }
 #value-list li {
   padding: 4px 8px;
   cursor: pointer;
@@ -209,6 +211,19 @@ table.props td.prop-name { color: var(--text-dim); width: 45%; }
 #armf-table input:focus { outline: none; border-color: var(--accent); }
 #armf-table td.fixed-module { color: var(--text); font-weight: 600; }
 #armf-add-row { margin-top: 6px; }
+#armf-table td.armf-action { width: 28px; text-align: center; padding: 2px; border: none; background: transparent; }
+#armf-table th.armf-action { width: 28px; border: none; background: transparent; }
+.armf-remove-row {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  width: 22px;
+  height: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.armf-remove-row:hover { color: #ff7b72; border-color: #ff7b72; }
 .armf-note { color: var(--text-dim); font-size: 11px; margin-top: 6px; }
 
 /* ---------- status bar ---------- */
